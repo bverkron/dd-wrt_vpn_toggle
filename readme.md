@@ -25,7 +25,7 @@ To flip the OpenVPN Enable / Disable setting in the web ui use this.
 ```
 nvram set openvpncl_enable="0"
 nvram commit
-``
+```
 
 Where openvpncl_enable="0" would Disable the VPN in the UI and openvpncl_enable="1" would enable it. Not this does not actualy start / stop the OpenVPN service itself. It only toggles the config / UI.
 
@@ -33,7 +33,7 @@ Thus the complete commands to have the GUI match the daemon state would be somet
 
 **EDIT:** This does not work as expected since Disabling the VPN in the UI causes the .conf file to be destroyed and it's ony recreated when the VPN is started via the UI.  Thus this would have to start from a state of having the VPN Enabled in the UI and could break at some point. More research needed.
 
-# Start (Complete)
+### Start (w/sync)
 ```
 openvpn --config /tmp/openvpncl/openvpn.conf --route-up /tmp/openvpncl/route-up.sh --route-pre-down /tmp/openvpncl/route-down.sh --daemon; CODE=$?; sleep 2; CHECK="$(pidof openvpn)"; if [ -z "$CHECK" ]; then echo "VPN NOT started. Error code $CODE"; else nvram set openvpncl_enable="1"; nvram commit; echo "VPN running..."; fi
 ```
